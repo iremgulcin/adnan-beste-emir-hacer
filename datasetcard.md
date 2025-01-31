@@ -1,90 +1,63 @@
----
-# Dataset Card
----
+# Dataset Card for Invasive Fish Species  
 
-# Dataset Card for {{ pretty_name | default("Dataset Name", true) }}
+## Dataset Summary  
 
-<!-- Provide a quick summary of the dataset. -->
+This dataset contains images of invasive fish species found in Turkish waters.  
 
-{{ dataset_summary | default("", true) }}
+## Dataset Details  
 
-## Dataset Details
+### Dataset Description  
 
-### Dataset Description
+This dataset aims to identify and monitor invasive fish species present in Turkish waters. It includes fish images downloaded from the iNaturalist site, using image processing techniques for detection. There are a total of 8 classes: lionfish, mosquito fish, pufferfish, soldierfish, sunfish, pebblefish, suckerfish, and sea urchin.  
 
-<!-- Provide a longer summary of what this dataset is. -->
+- **Curated by:** Emir, Hacer, Beste, Adnan  
+- **License:** [Appropriate license to be selected]   
+- **Repository:** Currently not available  
+- **Paper:** Currently not available  
 
-{{ dataset_description | default("", true) }}
+## Uses  
 
-- **Curated by:** {{ curators | default("[More Information Needed]", true)}}
-- **License:** {{ license | default("[More Information Needed]", true)}}
+### Direct Use  
 
-### Dataset Sources [optional]
+This dataset is intended to train machine learning models to detect invasive fish species.  
 
-<!-- Provide the basic links for the dataset. -->
+## Dataset Structure  
 
-- **Repository:** {{ repo | default("[More Information Needed]", true)}}
-- **Paper [optional]:** {{ paper | default("[More Information Needed]", true)}}
-- **Demo [optional]:** {{ demo | default("[More Information Needed]", true)}}
+### Dataset Fields  
 
-## Uses
+- **Class:** The name of the fish species (e.g., lionfish)  
+- **Image:** The image of the fish species (image files)  
+- **Label:** The correct label for each image  
 
-<!-- Address questions around how the dataset is intended to be used. -->
+## Dataset Creation  
 
-### Direct Use
+### Source Data  
 
-<!-- This section describes suitable use cases for the dataset. -->
+The dataset was created using images downloaded from the iNaturalist site.  
 
-{{ direct_use | default("[More Information Needed]", true)}}
+#### Data Collection and Processing  
 
+Images were selected and downloaded from the iNaturalist platform, and then prepared using RoboFlow.  
 
-## Dataset Structure
+### Features and the Target  
 
-<!-- This section provides a description of the dataset fields, and additional information about the dataset structure such as criteria used to create the splits, relationships between data points, etc. -->
+- **Features:** Fish images  
+- **Target:** To recognize invasive fish species  
 
-{{ dataset_structure | default("[More Information Needed]", true)}}
+### Annotations  
 
-## Dataset Creation
+#### Annotation Process  
 
-### Source Data
+Currently, there is no defined annotation process.  
 
-<!-- This section describes the source data (e.g. news text and headlines, social media posts, translated sentences, ...). -->
+#### Who are the annotators?  
 
-#### Data Collection and Processing
+No information is available regarding the data annotation.  
 
-<!-- This section describes the data collection and processing process such as data selection criteria, filtering and normalization methods, tools and libraries used, etc. -->
+## Bias, Risks, and Limitations  
 
-{{ data_collection_and_processing_section | default("[More Information Needed]", true)}}
+There are currently no biases, risks, or limitations associated with this dataset.  
 
-#### Features and the target
+## Citation  
 
-<!-- This section describes the features of the dataset and the target of the project -->
-
-### Annotations [optional]
-
-<!-- If the dataset contains annotations which are not part of the initial data collection, use this section to describe them. -->
-
-#### Annotation process
-
-<!-- This section describes the annotation process such as annotation tools used in the process, the amount of data annotated, annotation guidelines provided to the annotators, interannotator statistics, annotation validation, etc. -->
-
-{{ annotation_process_section | default("[More Information Needed]", true)}}
-
-#### Who are the annotators?
-
-<!-- This section describes the people or systems who created the annotations. -->
-
-{{ who_are_annotators_section | default("[More Information Needed]", true)}}
-
-
-## Bias, Risks, and Limitations
-
-<!-- This section is meant to convey both technical and sociotechnical limitations. -->
-
-{{ bias_risks_limitations | default("[More Information Needed]", true)}}
-
-
-## Citation [optional]
-
-<!-- If there is a paper or blog post introducing the dataset, the APA and Bibtex information for that should go in this section. -->
-
+No citations have been provided at this time.
