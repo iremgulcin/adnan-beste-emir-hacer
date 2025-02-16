@@ -1,0 +1,6 @@
+train: /content/drive/My Drive/datason/train/images
+val: /content/drive/My Drive/datason/val/images
+test: /content/drive/My Drive/datason/test/images
+
+nc: 8  # Sınıf sayısı
+names: ['Asker Baligi', 'Aslan Baligi', 'Balon Baligi', 'Cakil Baligi', 'Deniz Kestanesi', 'Gunes Levregi', 'Sivrisinek Baligi', 'Sokar Baligi']
