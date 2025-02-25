@@ -1,0 +1,28 @@
+
+# Backend klasörünü ignore et
+backend/
+
+# Sanal ortam klasörü (Python virtual environment)
+env/
+
+# SQLite veritabanı dosyaları
+*.db
+*.sqlite
+*.sqlite3
+
+# __pycache__ klasörleri ve derlenmiş Python dosyaları
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Log dosyaları
+*.log
+
+# IDE ve sistem dosyaları
+.vscode/
+.idea/
+.DS_Store
+
+
+env/
