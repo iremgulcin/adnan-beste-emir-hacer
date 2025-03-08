@@ -3,17 +3,22 @@ import cv2
 import json
 import yt_dlp
 import asyncio
-from ultralytics import YOLO
-import numpy as np
-from yolox.tracker.byte_tracker import BYTETracker
 import argparse
-from fastapi.staticfiles import StaticFiles
+import subprocess
+import numpy as np
+from pathlib import Path
+import moviepy as mp
 from ultralytics import YOLO
+from urllib.parse import unquote
+from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from yolox.tracker.byte_tracker import BYTETracker
+from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 app = FastAPI()
-
-app.mount("/videos", StaticFiles(directory="videos"), name="videos")
+router = APIRouter() 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--track_thresh', type=float, default=0.6, help='Tracking confidence threshold')
@@ -25,12 +30,52 @@ parser.add_argument('--device', default='cpu', help='Device for inference (cpu o
 parser.add_argument('--track_buffer', type=int, default=100, help='Number of frames to keep lost targets in buffer')
 args = parser.parse_args([]) 
 
+BASE_DIR = Path.home() / "my_fastapi_videos"
+VIDEO_DIR = BASE_DIR / "videos"
+VIDEO_DIR.mkdir(parents=True, exist_ok=True)
+THUMBNAIL_ROOT = BASE_DIR / "thumbnails"  
+THUMBNAIL_ROOT.mkdir(exist_ok=True)  
+
+
+app.mount("/videos", StaticFiles(directory=str(VIDEO_DIR), html=True), name="videos")
+
+@app.get("/videos", response_model=list[str]) 
+async def list_videos():
+    if not VIDEO_DIR.exists():
+        return []  
+    return [f.name for f in VIDEO_DIR.iterdir() if f.suffix in {".mp4", ".avi", ".mkv"}]
+
+@router.get("/thumbnails/{video_name}")
+async def get_video_thumbnail(video_name: str):
+    # ".mp4" uzantısını kaldır ve dosya yollarını oluştur
+    video_stem = video_name.replace(".mp4", "")
+    video_path = VIDEO_DIR / video_name
+    thumbnail_path = THUMBNAIL_ROOT / f"{video_stem}_thumbnail.jpg"
+
+    if not video_path.exists():
+        raise HTTPException(status_code=404, detail=f"Video {video_name} not found")
+
+    if not thumbnail_path.exists():
+        try:
+            # 🎬 Thumbnail oluşturuluyor
+            clip = mp.VideoFileClip(str(video_path))
+            frame = clip.get_frame(1)  # 1. saniyeden kare al
+            clip.close()  # Hafıza sızıntısını önlemek için kapat
+            from PIL import Image
+            img = Image.fromarray(frame)
+            img.save(thumbnail_path)  # Thumbnail kaydet
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error generating thumbnail: {str(e)}")
+
+    return FileResponse(thumbnail_path, media_type="image/jpeg")
+
+
 # Detection API
 @app.websocket("/detection_ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     video_file_path = "input_video.mp4"
-    output_video_path = "/home/hacer/Desktop/flutter_deneme_01/assets/videos/output_video.mp4"  # Sonucun kaydedileceği dosya
+    output_video_path = str(VIDEO_DIR / "detection.mp4")
     model_path = "/home/hacer/yolo_tracking_backend/best.pt"  
 
     try:
@@ -93,7 +138,7 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_bytes(buffer.tobytes())
 
             # Video hızını ayarlamak için bir süre bekle (frame rate)
-            await asyncio.sleep(1 / 10) 
+            await asyncio.sleep(1 / 30) 
 
     except json.JSONDecodeError:
         await websocket.send_text("JSON formatı hatalı.")
@@ -114,14 +159,14 @@ async def websocket_endpoint(websocket: WebSocket):
             cap.release()
         if 'out' in locals():
             out.release() 
-
+            
 
 # ByteTrack API
 @app.websocket("/byte_track_ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     video_file_path = "input_video.mp4"
-    output_video_path = "videos/output_video_track.mp4"  # Sonucun kaydedileceği dosya
+    output_video_path = str(VIDEO_DIR / "tracking.mp4")
     model_path = "/home/hacer/yolo_tracking_backend/best.pt"
     tracker = BYTETracker(args)
     
@@ -211,7 +256,7 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_bytes(buffer.tobytes())
 
             # Video hızını ayarlamak için bir süre bekle (frame rate)
-            await asyncio.sleep(1 / 10)  
+            await asyncio.sleep(1 / 30)  
 
     except json.JSONDecodeError:
         await websocket.send_text("JSON formatı hatalı.")
@@ -236,3 +281,6 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.get("/")
 def root():
     return {"message": "API Çalışıyor!"}
+
+
+

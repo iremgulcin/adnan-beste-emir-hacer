@@ -1,2 +1,0 @@
-/home/hacer/Desktop/flutter_deneme_01/android/app/.cxx/Debug/z454n5k5/x86/CMakeFiles/edit_cache.dir
-/home/hacer/Desktop/flutter_deneme_01/android/app/.cxx/Debug/z454n5k5/x86/CMakeFiles/rebuild_cache.dir
