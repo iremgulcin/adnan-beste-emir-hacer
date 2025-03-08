@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/etYouTubeUrl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="YouTube URL girin"
+        android:inputType="textUri"
+        android:padding="16dp"
+        android:textColor="#FDFDFD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSelectModel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Model Seç"
+        android:textColor="@color/purple_200"
+        android:background="@drawable/button_background"
+        app:layout_constraintTop_toBottomOf="@id/etYouTubeUrl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:padding="20dp"/>
+
+    <Button
+        android:id="@+id/btnStartProcessing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Başlat"
+        android:textColor="@color/purple_200"
+        android:background="@drawable/button_background"
+        app:layout_constraintTop_toBottomOf="@id/btnSelectModel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:padding="16dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
